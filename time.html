@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--
+			▓▓▓▓Dev by Arismário Neves▓▓▓▓
+			arismarioneves@hotmail.com.br
+			
+            This script returns the current date time from http://worldclockapi.com/ using REST API service.
+      
+			World Clock API:
+			http://worldclockapi.com/
+		-->
+		<meta charset="UTF-8">
+		<title>Time</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="author" content="Arismário Neves">
+		<meta name="contact" content="arismarioneves@hotmail.com.br">
+		
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+		
+		<script>
+            //Executes when the DOM is completely loaded
+			$(document).ready(function() {
+				setInterval(function() {
+					getime();
+				}, 1000); //01 second per request
+			});
+			
+			function getime() {
+				$.ajax({
+					url : "http://worldclockapi.com/api/json/utc/now",
+					type: "GET",
+					dataType: "JSON",
+					success: function(time)
+					{
+						var cd = new Date(time.currentDateTime);
+						var h = cd.getHours();
+						var m = cd.getMinutes();
+						
+                        //add zero to the left
+						if (h < 10) { h = "0" + h; }
+						if (m < 10) { m = "0" + m; }
+						
+						$("#time").html("<strong>" + h + " : " + m + "</strong>");
+						$("#data").html("<strong>" + time.ordinalDate + "</strong>");
+						$("#day").html(time.dayOfTheWeek);
+					}
+				});
+			}
+		</script>
+	</head>
+	</body>
+		<div class="bg-dark text-center text-white">
+			<div class="container p-4">
+				<section class="mb-4">
+					<h1 id="time">00 : 00</h1>
+					<blockquote class="blockquote text-right pt-3">
+						<p class="mb-2">Temos <b>tempo</b> para tudo o que realmente queremos, para as demais coisas usamos o <b>tempo</b> como desculpa.</p>
+						<footer class="blockquote-footer">Arismário Neves</footer>
+					</blockquote>
+				</section>
+			</div>
+			<div class="text-center p-3">
+				<div class="text-white" id="day"></div>
+				<div class="text-white" id="data"></div>
+			</div>
+		</div>
+	</body>
+</html>
